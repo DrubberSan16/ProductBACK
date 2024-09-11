@@ -19,12 +19,12 @@ namespace CategoryAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            var Categorys = await _unitOfWork.Categories.GetAllAsync();
-            return Ok(Categorys);
+            var categorys = await _unitOfWork.Categories.GetAllAsync();
+            return Ok(categorys);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Category>> GetCategory(long id)
         {
             var Category = await _unitOfWork.Categories.GetByIdAsync(id);
 
@@ -46,7 +46,7 @@ namespace CategoryAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(long id, Category category)
         {
             if (id != category.Id)
             {
@@ -75,7 +75,7 @@ namespace CategoryAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(long id)
         {
             var category = await _unitOfWork.Categories.GetByIdAsync(id);
             if (category == null)

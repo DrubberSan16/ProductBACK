@@ -1,13 +1,20 @@
-﻿namespace ProductAPI.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ProductAPI.Models
 {
+    [Table("product_favorite_user")]
     public class ProductFavoriteUser
     {
-        public int Id { get; set; }
-        public int IdProduct { get; set; }
-        public Guid Uuid { get; set; }
+        [Column("id")]
+        public long Id { get; set; }
+        [Column("id_product")]
+        public long IdProduct { get; set; }
+        [Column("uuid")]
+        public string Uuid { get; set; }
+        [Column("quantity")]
         public int Quantity { get; set; }
+        [Column("total")]
         public decimal Total { get; set; }
 
-        public Product Product { get; set; }
     }
 }

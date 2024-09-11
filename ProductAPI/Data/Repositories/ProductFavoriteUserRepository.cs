@@ -17,7 +17,14 @@ namespace ProductAPI.Data.Repositories
             return await _context.ProductFavoriteUsers.ToListAsync();
         }
 
-        public async Task<ProductFavoriteUser> GetByIdAsync(int id)
+        public async Task<IEnumerable<ProductFavoriteUser>> GetAllBySessionUuidAsync(string sessionUuid)
+        {
+            return await _context.ProductFavoriteUsers
+                                 .Where(w => w.Uuid == sessionUuid)
+                                 .ToListAsync();
+        }
+
+        public async Task<ProductFavoriteUser> GetByIdAsync(long id)
         {
             return await _context.ProductFavoriteUsers.FindAsync(id);
         }

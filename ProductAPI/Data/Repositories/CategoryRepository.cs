@@ -14,17 +14,17 @@ namespace ProductAPI.Data.Repositories
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Category.ToListAsync();
         }
 
-        public async Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(long id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Category.FindAsync(id);
         }
 
         public async Task AddAsync(Category category)
         {
-            await _context.Categories.AddAsync(category);
+            await _context.Category.AddAsync(category);
         }
 
         public void Update(Category category)
@@ -34,7 +34,7 @@ namespace ProductAPI.Data.Repositories
 
         public void Delete(Category category)
         {
-            _context.Categories.Remove(category);
+            _context.Category.Remove(category);
         }
     }
 

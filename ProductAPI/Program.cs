@@ -23,6 +23,18 @@ builder.Services.AddScoped<IProductFavoriteUserRepository, ProductFavoriteUserRe
 // Agregar servicios para controladores
 builder.Services.AddControllers();
 
+// Agregar servicio de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +47,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("AllowSpecificOrigin");
 
 /*
 var summaries = new[]

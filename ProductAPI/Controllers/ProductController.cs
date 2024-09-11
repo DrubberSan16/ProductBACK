@@ -24,7 +24,7 @@ namespace ProductAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<Product>> GetProduct(long id)
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id);
 
@@ -34,6 +34,27 @@ namespace ProductAPI.Controllers
             }
 
             return Ok(product);
+        }
+
+        
+        [HttpGet]
+        [Route("search")]
+        public async Task<ActionResult<IEnumerable<Product>>> SearchProducts([FromQuery] string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return BadRequest("El término de búsqueda no puede estar vacío.");
+            }
+
+            // Filtrar productos usando el término de búsqueda
+            var products = await _unitOfWork.Products.FindAsync(p => p.NameProduct.Contains(search) || p.Description.Contains(search));
+
+            if (products == null || !products.Any())
+            {
+                return NotFound("No se encontraron productos que coincidan con el término de búsqueda.");
+            }
+
+            return Ok(products);
         }
 
         [HttpPost]
@@ -46,7 +67,7 @@ namespace ProductAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(long id, Product product)
         {
             if (id != product.Id)
             {
@@ -75,7 +96,7 @@ namespace ProductAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(long id)
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id);
             if (product == null)

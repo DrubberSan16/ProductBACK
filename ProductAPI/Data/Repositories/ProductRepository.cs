@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductAPI.Models;
+using System.Linq.Expressions;
 
 namespace ProductAPI.Data.Repositories
 {
@@ -17,9 +18,14 @@ namespace ProductAPI.Data.Repositories
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<Product> GetByIdAsync(long id)
         {
             return await _context.Products.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> predicate)
+        {
+            return await _context.Products.Where(predicate).ToListAsync();
         }
 
         public async Task AddAsync(Product product)

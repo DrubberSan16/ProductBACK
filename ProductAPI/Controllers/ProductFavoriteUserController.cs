@@ -17,14 +17,14 @@ namespace ProductAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductFavoriteUser>>> GetProductFavoriteUsers()
+        public async Task<ActionResult<IEnumerable<ProductFavoriteUser>>> GetAllProductFavoriteUsers()
         {
             var productFavoriteUsers = await _unitOfWork.ProductFavoriteUsers.GetAllAsync();
             return Ok(productFavoriteUsers);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductFavoriteUser>> GetProductFavoriteUser(int id)
+        public async Task<ActionResult<ProductFavoriteUser>> GetProductFavoriteUser(long id)
         {
             var productFavoriteUser = await _unitOfWork.ProductFavoriteUsers.GetByIdAsync(id);
 
@@ -46,7 +46,7 @@ namespace ProductAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductFavoriteUser(int id, ProductFavoriteUser productFavoriteUser)
+        public async Task<IActionResult> PutProductFavoriteUser(long id, ProductFavoriteUser productFavoriteUser)
         {
             if (id != productFavoriteUser.Id)
             {
@@ -75,7 +75,7 @@ namespace ProductAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductFavoriteUser(int id)
+        public async Task<IActionResult> DeleteProductFavoriteUser(long id)
         {
             var productFavoriteUser = await _unitOfWork.ProductFavoriteUsers.GetByIdAsync(id);
             if (productFavoriteUser == null)
@@ -88,6 +88,15 @@ namespace ProductAPI.Controllers
 
             return NoContent();
         }
+
+        // Obtener productos deseados filtrados por UUID de sesión de usuario
+        [HttpGet("by-session/{sessionUuid}")]
+        public async Task<IActionResult> GetAllProductFavoriteUserBySessionUuidAsync(string sessionUuid)
+        {
+            var wishlist = await _unitOfWork.ProductFavoriteUsers.GetAllBySessionUuidAsync(sessionUuid);
+            return Ok(wishlist);
+        }
+
     }
 
 }
